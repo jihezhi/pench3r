@@ -7,8 +7,5 @@ import (
 )
 
 func main() {
-    e := http.ListenAndServe(":8888", http.FileServer(http.Dir(".")))
-    if e != nil {
-        log.Fatal("ListenAndServe: ",e)
-    }
+    log.Fatal(http.ListenAndServe(":8888", http.FileServer(http.Dir("."))))
 }
