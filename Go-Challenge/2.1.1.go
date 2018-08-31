@@ -10,15 +10,12 @@ import (
 func main() {
     requestSender := make(chan int)
     responseReceiver := make(chan int)
-    sumChannel := make(chan int)
-    var sum int
     // 初始化源管道中的数据
-    go func() { sumChannel <- 0}()
     go func() {
-        for s := range sumChannel {
-            sum = s + <-requestSender
+        var sum = 0
+        for r := range requestSender {
+            sum = sum + r
             responseReceiver <- sum
-            go func(s int) {sumChannel <- s}(sum)
         }
     } ()
 
