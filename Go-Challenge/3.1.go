@@ -3,8 +3,12 @@ package main
 
 import (
     "net/http"
+    "log"
 )
 
 func main() {
-    http.ListenAndServe(":8888", http.FileServer(http.Dir("./")))
+    e := http.ListenAndServe(":8888", http.FileServer(http.Dir(".")))
+    if e != nil {
+        log.Fatal("ListenAndServe: ",e)
+    }
 }
