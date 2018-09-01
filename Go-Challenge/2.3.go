@@ -24,6 +24,10 @@ func (mt myType) describe() string {
 }
 
 func multitype_show(typename ...eval_desc_I) {
+    if len(typename) == 0 {
+        fmt.Println("you need pass one eval_desc_I interface at least")
+        return
+    }
     for _,v := range typename {
         fmt.Println(v.evaluate(), v.describe())
     }
@@ -34,4 +38,5 @@ func main() {
     mt1 := myType{19, "pench3r"}
     mt2 := myType{20, "pench3r"}
     multitype_show(mt, mt1, mt2)
+    multitype_show()
 }
