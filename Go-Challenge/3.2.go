@@ -53,12 +53,14 @@ func main() {
         }
         req,res := handleConn(conn)
         storeResponseChannel = append(storeResponseChannel, res)
+        // fan-in
         go func(req chan string) {
             for r := range req {
                 globalMessageChannel <- r
                 fmt.Printf("Recv msg: %v", r)
             }
         }(req)
+        // fan-out
         go func() {
             for g := range globalMessageChannel {
                 fmt.Printf("broadcast msg: %v", g)
