@@ -1,0 +1,63 @@
+<html>
+	<link rel="stylesheet" href="./assets/bulma-docs.min.css">
+  <link rel="stylesheet" href="./assets/bulma.min.css">
+	<script defer src="./assets/all.js"></script>
+	<script>
+		ws = new WebSocket("ws://127.0.0.1:8888/echo");
+		ws.onopen = function (evt) { console.log("connected") };
+		ws.onclose = function (evt) { console.log("disconnected") };
+		ws.onmessage = function (evt) { 
+      console.log("recived data: ", evt)
+      var chat_content = JSON.parse(evt.data);
+      addContent(chat_content.Name, chat_content.Content)
+    };
+		ws.onerror = function (evt) { console.log("error occured") };
+		function send() {
+			if (!ws) {return false;}
+      console.log("send...")
+			ws.send(JSON.stringify({Content: document.getElementById("user_input").value}));
+			return;
+		}
+    function addContent(name, content) {
+      var n_chatContent_1 = document.createElement("div");
+      n_chatContent_1.className = "card-content";
+
+      var n_chatContent_2 = document.createElement("div");
+      n_chatContent_2.className = "media";
+      var n_chatContent_2_p = document.createElement("p");
+      n_chatContent_2_p.className = "title is-5";
+      n_chatContent_2_p.innerText = name;
+      n_chatContent_2.appendChild(n_chatContent_2_p);
+
+      var n_chatContent_3 = document.createElement("div");
+      n_chatContent_3.className = "content";
+      n_chatContent_3.innerText = content;
+      n_chatContent_3.style = "word-break:break-all;"
+
+      n_chatContent_1.appendChild(n_chatContent_2);
+      n_chatContent_1.appendChild(n_chatContent_3);
+
+      var parent_node = document.getElementById("chat");
+      parent_node.appendChild(n_chatContent_1);
+
+      document.getElementById("scroll-content").scrollTop = document.getElementById("scroll-content").scrollHeight;
+
+    }
+	</script>
+	<body class="layout-documentation page-components">
+<main class="bd-main">
+<div class="bd-main-container container">
+<div class="bd-content" style="height: 80%;border: 2px solid #f5f5f5;margin-bottom: 10px;overflow: auto" id="scroll-content">
+<div class="content" id="chat" style="overflow: auto">
+
+</div>
+</div>
+<div class="control">
+  <textarea class="textarea" style="resize: none;" type="text" placeholder="Normal textarea" id="user_input"></textarea>
+</div>
+<br >
+<a class="button is-info" style="float: right;" onclick=send()>Send</a>
+</div>
+</main>
+	</body>
+</html>
