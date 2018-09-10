@@ -16,6 +16,7 @@
 			if (!ws) {return false;}
       console.log("send...")
 			ws.send(JSON.stringify({Content: document.getElementById("user_input").value}));
+			document.getElementById("user_input").value = "";
 			return;
 		}
     function addContent(name, content) {
